@@ -1,45 +1,33 @@
 'use strict';
-const axios = require('axios');
-const xmlParser = require('xml2json');
-const baseURL = 'http://www.pixelpointhq.com/api/v1/eoi';
-const config = { headers: { 'Content-Type': 'application/xml' } };
+const PixelPointAPI = require('../API').PixelPointAPI;
 
-module.exports.ListReportCategories = async function() {
-  const params = `<?xml version="1.0"?>
-  <Request>
-  <EOITransfer>
-    <EOIAuthenticationToken>TX712z41-3CB274D9A556DF</EOIAuthenticationToken>
-  </EOITransfer>
-  <RequestType>256</RequestType>
-  <Transaction>
-    
-  </Transaction>
-  
-  </Request>`;
-
-  try {
-    return JSON.parse(
-      xmlParser.toJson((await axios.post(baseURL, params, config)).data)
-    );
-  } catch (e) {
-    console.log(e);
-  }
+module.exports.ListReportCategories = async function(token) {
+  validateToken(token);
+  return await PixelPointAPI.get(token, 256);
 };
 
-module.exports.ListAllProducts = async function() {
-  const params = `<?xml version="1.0"?>
-  <Request>
-  <RequestType>1024</RequestType>
-  <EOITransfer>
-    <EOIAuthenticationToken>TX712z41-3CB274D9A556DF</EOIAuthenticationToken>
-  </EOITransfer>
-  </Request>`;
-
-  try {
-    return JSON.parse(
-      xmlParser.toJson((await axios.post(baseURL, params, config)).data)
-    );
-  } catch (e) {
-    console.log(e);
-  }
+module.exports.ListAllProducts = async function(token) {
+  validateToken(token);
+  return await PixelPointAPI.get(token, 1024);
 };
+
+module.exports.ListConfigCategories = async function(token) {
+  validateToken(token);
+  return await PixelPointAPI.get(token, 512);
+};
+
+module.exports.ListSaleTypes = async function(token) {
+  validateToken(token);
+  return await PixelPointAPI.get(token, 2048);
+};
+
+module.exports.ListCoupons = async function(token) {
+  validateToken(token);
+  return await PixelPointAPI.get(token, 4096);
+};
+
+function validateToken(token) {
+  if (!token) {
+    throw Error('Token was not received');
+  }
+}

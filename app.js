@@ -15,6 +15,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/auth', AuthRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/pixel-point', PixelPointRouter);
-app.use('/api/products', PixelPointRouter);
+app.use('/api/pixel-point/products', PixelPointRouter);
+app.use('/api/pixel-point/config-categories', PixelPointRouter);
+app.use('/api/pixel-point/sale-types', PixelPointRouter);
+app.use('/api/pixel-point/coupons', PixelPointRouter);
+
 
 module.exports = app;
